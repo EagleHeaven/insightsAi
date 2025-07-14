@@ -6,6 +6,13 @@ import requests
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 MODEL = os.getenv("OPENAI_MODEL", "gpt-4o")
 
+def _sanitize_prompt(prompt: str) -> str:
+    # Enlève caractères invisibles et coupe si trop long
+    prompt = str(prompt)
+    prompt = re.sub(r"[^\x20-\x7EÀ-ÿ’€.,;:!?()\[\]\-\'\"%$@]", "", prompt)
+    # Limite la taille du prompt à 4000 caractères
+    return prompt[:4000]
+
 def ask_llm(prompt: str) -> str:
     url = "https://api.openai.com/v1/chat/completions"
     headers = {
@@ -25,16 +32,15 @@ def ask_llm(prompt: str) -> str:
         resp = requests.post(url, headers=headers, json=payload, timeout=60)
         resp.raise_for_status()
         json_data = resp.json()
-
-        # Debugging: print full response if unexpected
         if "choices" not in json_data or not json_data["choices"]:
-            print("❌ LLM response incomplete or missing:", json_data)
+            logger.error("LLM response incomplete or missing keys.")
             return ""
-
-        return json_data["choices"][0]["message"]["content"].strip()
+        # Limite la taille de la réponse (évite OOM + injection ultra longue)
+        result = json_data["choices"][0]["message"]["content"]
+        return result.strip()[:5000]  # 5000 caractères max en sortie
     except requests.exceptions.RequestException as e:
-        print("❌ Request to OpenAI failed:", str(e))
+        logger.error(f"Request to OpenAI failed: {type(e).__name__} - {str(e)}")
         return ""
     except Exception as e:
-        print("❌ Unexpected error in ask_llm:", str(e))
+        logger.error(f"Unexpected error in ask_llm: {type(e).__name__} - {str(e)}")
         return ""

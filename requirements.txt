@@ -5,8 +5,6 @@ python-dotenv
 pandas
 requests
 numpy
-torch
-transformers
 python-multipart
 botocore
 cement
@@ -23,3 +21,5 @@ urllib3
 packaging
 blessed
 fabric
+slowapi
+itsdangerous
