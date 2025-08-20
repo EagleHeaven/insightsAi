@@ -1,71 +1,409 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Insights — AI-Powered review analysis</title>
-  <link rel="stylesheet" href="/static/styles.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>InsightsAI — Your hotel’s day, on one page</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="static/styles.css" />
 </head>
 <body>
-  <div id="tooltip" class="tooltip" aria-hidden="true"></div>
 
-  <header>
-    <div class="logo">Insights AI</div>
-    <h1>Let AI read your reviews and tell you what to fix</h1>
-    <p>Insights analyzes Google reviews and gives you instant recommendations to improve your service and increase your revenue.</p>
-    <!-- Updated: scroll to Google form -->
-    <button class="cta" onclick="document.getElementById('google-form').scrollIntoView({ behavior: 'smooth' })">Try Insights Now</button>
+  <!-- Top nav -->
+  <header class="nav">
+    <div class="container nav__row">
+      <div class="nav__brand">InsightsAI</div>
+      <nav class="nav__links">
+        <a href="#how">How</a>
+        <a href="#roi">ROI</a>
+        <a href="#pricing">Pricing</a>
+        <!-- NEW: Book a demo CTA -->
+       <a href="https://calendly.com/disaya-bxl/30min" class="nav__cta">Book a demo</a>
+      </nav>
+    </div>
   </header>
 
-  <main>
-    <section>
-      <h2>Upload a CSV file</h2>
-      <p class="hint">
-        Your CSV must contain at least one column named "review" with the text. You can optionally include a 'source' column (e.g. Google, Tripadvisor).
-      </p>
-      <form id="csv-form">
-        <input type="file" id="csvFile" name="file" accept=".csv" required>
-        <div class="cta-centered">
-          <button type="submit" id="csv-submit">Generate Insights</button>
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero__bg"></div>
+    <div class="container hero__content">
+      <h1 class="hero__title">Your hotel’s day, on one page</h1>
+      <p class="hero__sub">Every review. Every insight. Delivered every morning in plain language.</p>
+      <a class="btn btn--primary" href="#roi">Start saving time today</a>
+    </div>
+  </section>
+
+  <!-- From → To -->
+  <section class="fromto container">
+    <div class="fromto__head">
+      <h2 class="hbar">From chaos</h2>
+      <h2 class="hbar hbar--right">To clarity</h2>
+    </div>
+
+    <div class="fromto__grid">
+      <!-- BEFORE (flip + overlay/blur) -->
+      <div class="flip" data-flip aria-expanded="false">
+        <div class="flip__inner" tabindex="-1">
+          <!-- Front -->
+          <article class="flip-face flip-front before-front" data-flip-front>
+            <div class="front-copy">
+              <span>Reviews</span>
+              <span>everywhere.</span>
+              <span>No</span>
+              <span>time.</span>
+              <span>No</span>
+              <span>clarity.</span>
+            </div>
+
+            <div class="front-badge front-badge--down" aria-hidden="true">
+              <!-- trending down -->
+              <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M3 6l7 7 4-4 7 7" />
+                <path d="M21 14v6h-6" />
+              </svg>
+            </div>
+
+            <button class="poster-plus" aria-label="Open card"><span aria-hidden="true">+</span></button>
+          </article>
+
+          <!-- Back -->
+          <article class="flip-face flip-back flip-back--before">
+            <div class="flip-back__inner">
+              <h3 class="flip-back__title">Before InsightsAI</h3>
+              <ul class="flip-back__list">
+                <li>
+                  <span class="ico" aria-hidden="true">
+                    <!-- clock -->
+                    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2">
+                      <circle cx="12" cy="12" r="9"></circle>
+                      <path d="M12 7v5l3 3"></path>
+                    </svg>
+                  </span>
+                  Hours wasted reading reviews manually
+                </li>
+                <li>
+                  <span class="ico" aria-hidden="true">
+                    <!-- warning -->
+                    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M12 3l10 18H2L12 3z"></path>
+                      <path d="M12 9v5"></path>
+                      <circle cx="12" cy="17" r="1"></circle>
+                    </svg>
+                  </span>
+                  Missed important customer feedback
+                </li>
+                <li>
+                  <span class="ico" aria-hidden="true">
+                    <!-- trend down (arrow) -->
+                    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M7 7l10 10"></path>
+                      <path d="M17 7v10H7"></path>
+                    </svg>
+                  </span>
+                  Declining guest satisfaction & revenue
+                </li>
+              </ul>
+            </div>
+            <button class="poster-close" aria-label="Close card">×</button>
+          </article>
         </div>
-      </form>
-    </section>
+      </div>
 
-    <section>
-      <h2>Or search by business name and city</h2>
-      <form id="google-form">
-        <label for="name">Business name</label>
-        <input type="text" id="name" name="name" required>
-        <label for="city">City</label>
-        <input type="text" id="city" name="city" required>
-        <div class="cta-centered">
-          <button type="submit" id="google-submit">Generate Insights</button>
+      <!-- AFTER (flip + overlay/blur) -->
+      <div class="flip" data-flip aria-expanded="false">
+        <div class="flip__inner" tabindex="-1">
+          <!-- Front -->
+          <article class="flip-face flip-front after-front" data-flip-front>
+            <div class="front-copy front-copy--after">
+              <span>One</span>
+              <span>page.</span>
+              <span>Every</span>
+              <span>insight.</span>
+              <span>Every</span>
+              <span>morning.</span>
+            </div>
+
+            <div class="front-badge front-badge--up" aria-hidden="true">
+              <!-- trending up -->
+              <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M3 18l7-7 4 4 7-7" />
+                <path d="M21 10V4h-6" />
+              </svg>
+            </div>
+
+            <button class="poster-plus" aria-label="Open card"><span aria-hidden="true">+</span></button>
+          </article>
+
+          <!-- Back -->
+          <article class="flip-face flip-back flip-back--after">
+            <div class="flip-back__inner">
+              <h3 class="flip-back__title">After InsightsAI</h3>
+              <ul class="flip-back__list">
+                <li>
+                  <span class="ico" aria-hidden="true">
+                    <!-- single sparkle -->
+                    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                      <path d="M12 3l2 4 4 2-4 2-2 4-2-4-4-2 4-2 2-4z"/>
+                    </svg>
+                  </span>
+                  Daily smart report in plain language
+                </li>
+                <li>
+                  <span class="ico" aria-hidden="true">
+                    <!-- bars -->
+                    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M5 20V10"></path>
+                      <path d="M10 20V6"></path>
+                      <path d="M15 20V13"></path>
+                      <path d="M20 20V8"></path>
+                    </svg>
+                  </span>
+                  All KPIs and trends on one page
+                </li>
+                <li>
+                  <span class="ico" aria-hidden="true">
+                    <!-- trend up -->
+                    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M7 17l10-10"></path>
+                      <path d="M9 7h8v8"></path>
+                    </svg>
+                  </span>
+                  More time, higher guest satisfaction
+                </li>
+              </ul>
+            </div>
+            <button class="poster-close" aria-label="Close card">×</button>
+          </article>
         </div>
-      </form>
-    </section>
+      </div>
+    </div>
+  </section>
 
-    <section>
-      <h2>Results</h2>
-      <div id="result" class="result"><em>Waiting for analysis...</em></div>
-    </section>
+  <!-- How it works (flip-lite, no blur) -->
+  <section id="how" class="how container">
+    <h2 class="hbar">How it works</h2>
 
-    <section class="support-section">
-      ❤️ If you love Insights, <a href="https://ko-fi.com/kevinwamba" target="_blank" rel="noopener">buy me a coffee <span class="coffee-emoji">☕</span></a>
-      <p>It helps keep the app online and free!</p>
-    </section>
+    <div class="how__grid">
+      <!-- Step 1 -->
+      <div class="flip flip--lite" data-flip-lite aria-expanded="false">
+        <div class="flip__inner" tabindex="-1">
+          <article class="flip-face flip-front card card--blue" data-flip-front>
+            <div class="card__step">1</div>
+            <div class="card__icon" aria-hidden="true">
+              <!-- Folder (SF-style) -->
+              <svg viewBox="0 0 24 24" width="48" height="48" fill="currentColor">
+                <path d="M4 5a2 2 0 0 1 2-2h6l6 6v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5z"/>
+              </svg>
+            </div>
+            <h3>Import your data</h3>
+            <p>Upload CSV or connect Google / Booking.</p>
+          </article>
+          <!-- BACK now centered and without bullets -->
+          <article class="flip-face flip-back card card--blue card--back card--center">
+            <div class="card__back-inner">
+              <h4>Import</h4>
+              <p>Upload a CSV or connect Google/Booking. No setup — instant sync.</p>
+            </div>
+            <button class="poster-close" aria-label="Close card">×</button>
+          </article>
+        </div>
+      </div>
 
-    <section class="support-section contact">
-      <h3>📬 Contact</h3>
-      <p>Email: <a href="mailto:kevin@vibeconnect.be">kevin@vibeconnect.be</a></p>
-      <p>WhatsApp: <a href="https://wa.me/33749813129" target="_blank" rel="noopener">+33 7 49 81 31 29</a></p>
-    </section>
-  </main>
+      <!-- Step 2 — single sparkle -->
+      <div class="flip flip--lite" data-flip-lite aria-expanded="false">
+        <div class="flip__inner" tabindex="-1">
+          <article class="flip-face flip-front card card--violet" data-flip-front>
+            <div class="card__step">2</div>
+            <div class="card__icon" aria-hidden="true">
+              <!-- Single sparkle -->
+              <svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                <path d="M12 3l2 4 4 2-4 2-2 4-2-4-4-2 4-2 2-4z"/>
+              </svg>
+            </div>
+            <h3>Generate insights</h3>
+            <p>AI processes reviews, finds patterns & KPIs.</p>
+          </article>
+          <!-- BACK now centered and without bullets -->
+          <article class="flip-face flip-back card card--violet card--back card--center">
+            <div class="card__back-inner">
+              <h4>Generate</h4>
+              <p>Our AI analyzes your reviews, detects patterns, and extracts KPIs automatically.</p>
+            </div>
+            <button class="poster-close" aria-label="Close card">×</button>
+          </article>
+        </div>
+      </div>
 
-  <footer>
-    &copy; 2025 Insights — All rights reserved. <br>
-    <a href="https://vibeconnect.be/termsconditions" target="_blank" rel="noopener">Privacy & Terms</a>
+      <!-- Step 3 -->
+      <div class="flip flip--lite" data-flip-lite aria-expanded="false">
+        <div class="flip__inner" tabindex="-1">
+          <article class="flip-face flip-front card card--teal" data-flip-front>
+            <div class="card__step">3</div>
+            <div class="card__icon" aria-hidden="true">
+              <!-- Document -->
+              <svg viewBox="0 0 24 24" width="48" height="48" fill="currentColor">
+                <path d="M6 2h9l5 5v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z"/>
+              </svg>
+            </div>
+            <h3>Get your report</h3>
+            <p>A crisp, plain-language summary every morning.</p>
+          </article>
+          <!-- BACK now centered and without bullets -->
+          <article class="flip-face flip-back card card--teal card--back card--center">
+            <div class="card__back-inner">
+              <h4>Report</h4>
+              <p>Receive a one-page, action-oriented summary with trends, outliers, and next steps.</p>
+            </div>
+            <button class="poster-close" aria-label="Close card">×</button>
+          </article>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Key benefits -->
+  <section class="benefits container">
+    <h2 class="hbar">Key benefits</h2>
+    <div class="benefits__grid">
+      <article class="benefit benefit--blue">
+        <div class="benefit__ico">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M9 16.2l-3.5-3.5-1.4 1.4L9 19 20.3 7.7l-1.4-1.4z"/></svg>
+        </div>
+        <h3>ROI calculator</h3>
+        <p>Measure the time you save and revenue you gain.</p>
+      </article>
+      <article class="benefit benefit--violet">
+        <div class="benefit__ico">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M12 2l9 4v6c0 5-3.8 9.4-9 10-5.2-.6-9-5-9-10V6l9-4z"/></svg>
+        </div>
+        <h3>Compliance</h3>
+        <p>EU hosting, encrypted data, fully GDPR-compliant.</p>
+      </article>
+      <article class="benefit benefit--teal">
+        <div class="benefit__ico">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M4 21V10h4v11H4zm6 0V3h4v18h-4zm6 0v-6h4v6h-4z"/></svg>
+        </div>
+        <h3>Insights</h3>
+        <p>KPIs and customer trends — at a glance.</p>
+      </article>
+      <article class="benefit benefit--peach">
+        <div class="benefit__ico">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M4 5a2 2 0 0 1 2-2h6l6 6v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5z"/></svg>
+        </div>
+        <h3>CSV import</h3>
+        <p>Easy import from Google, Booking, TripAdvisor.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- ROI -->
+  <section id="roi" class="roi container">
+    <div class="roi__card">
+      <div class="roi__left">
+        <h2 class="roi__title"><span class="roi__dot" aria-hidden="true"></span>ROI calculator</h2>
+        <p class="roi__hint">Adjust the sliders — results update instantly.</p>
+
+        <div class="slider">
+          <label for="range_reviews">Reviews / day <output id="out_reviews" for="range_reviews">12</output></label>
+          <input id="range_reviews" type="range" min="0" max="50" value="12" />
+        </div>
+
+        <div class="slider">
+          <label for="range_min">Minutes / review <output id="out_min" for="range_min">2</output></label>
+          <input id="range_min" type="range" min="1" max="10" value="2" />
+        </div>
+
+        <div class="slider">
+          <label for="range_rate">Hourly cost (€) <output id="out_rate" for="range_rate">19</output></label>
+          <input id="range_rate" type="range" min="8" max="60" value="19" />
+        </div>
+
+        <a class="btn btn--primary" href="#pricing">Start saving time today</a>
+      </div>
+
+      <aside class="roi__panel">
+        <h3 class="roi__panel-title">Estimated savings / month</h3>
+        <div class="roi__money" id="kpi_money">354 €</div>
+        <div class="roi__time" id="kpi_time">4 hrs/week saved</div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="faq container">
+    <h2 class="hbar">FAQ</h2>
+
+    <details class="qa">
+      <summary><span class="qa__ico" aria-hidden="true">
+        <!-- clock -->
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 3"></path>
+        </svg>
+      </span>Time savings?</summary>
+      <div class="qa__a">Most hotels save 5–10h/week (~1h/day). Small teams: 3–5h/week.</div>
+    </details>
+
+    <details class="qa">
+      <summary><span class="qa__ico" aria-hidden="true">
+        <!-- folder -->
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M4 5a2 2 0 0 1 2-2h6l6 6v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5z"/></svg>
+      </span>Which files can I import?</summary>
+      <div class="qa__a">CSV with guest data, text, languages. Google sync supported.</div>
+    </details>
+
+    <details class="qa">
+      <summary><span class="qa__ico" aria-hidden="true">
+        <!-- link/cloud-ish -->
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="6" y="8" width="12" height="8" rx="2"></rect>
+          <circle cx="9" cy="12" r="1"></circle><circle cx="15" cy="12" r="1"></circle>
+          <path d="M12 8V5"></path><circle cx="12" cy="4" r="1"></circle>
+        </svg>
+      </span>Is Google automatic?</summary>
+      <div class="qa__a">Yes — connect Google Business Profile once and it stays in sync.</div>
+    </details>
+
+    <details class="qa">
+      <summary><span class="qa__ico" aria-hidden="true">
+        <!-- globe -->
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="9"></circle>
+          <path d="M2.5 12h19M12 2.5a14 14 0 0 1 0 19M12 2.5a14 14 0 0 0 0 19"></path>
+        </svg>
+      </span>Languages?</summary>
+      <div class="qa__a">EN, FR, NL today — more coming soon.</div>
+    </details>
+  </section>
+
+  <!-- Contact band (Need a demo) -->
+  <section class="band container">
+    <h3>Need a quick demo?</h3>
+    <p>We’ll show you in 10 minutes — no meeting required.</p>
+    <div class="band__actions">
+      <a class="chip" href="https://wa.me/32492367417" target="_blank" rel="noopener">WhatsApp</a>
+      <a class="chip" href="mailto:wambakevin@gmail.com">Email</a>
+      <a class="chip chip--primary" href="https://calendly.com/disaya-bxl/30min" target="_blank" rel="noopener">Book a demo</a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer__row">
+      <div class="footer__brand">InsightsAI</div>
+      <nav class="footer__links">
+        <a href="https://www.fivo.be/terms" target="_blank" rel="noopener">Privacy</a>
+        <a href="https://www.fivo.be/terms" target="_blank" rel="noopener">Terms</a>
+        <a href="mailto:wambakevin@gmail.com">Contact</a>
+      </nav>
+      <div class="footer__tag">Built for hoteliers, hosted in Europe 🇪🇺</div>
+    </div>
   </footer>
 
-  <script src="/static/script.js" defer></script>
+  <!-- Overlay for main flip cards -->
+  <div class="flip-overlay" aria-hidden="true"></div>
+
+  <script src="static/script.js"></script>
 </body>
 </html>

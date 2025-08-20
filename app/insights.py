@@ -88,25 +88,25 @@ Then, choose your section heading as follows:
 – If Negative sentiment: title it “Main issues”
 – If Mixed sentiment: title it “Key observations”
 
-ALL OUTPUT MUST BE IN ENGLISH.
+ALL OUTPUT MUST BE IN FRENCH.
 
-BEGIN REPORT
+DEBUT DU RAPPORT
 {src_header}
 📊 {{SECTION_TITLE}} — {period} | {total_reviews} reviews
 1️⃣ …
 2️⃣ …
 3️⃣ …
 
-## KPIs to monitor
+## KPIs à suivre
 - …
 
 ## Conclusion
 …
-END REPORT
+FIN DU RAPPORT
 
 STRICT RULES
 – Use the exact section titles as instructed above.
-– Translate any non-English quotes into English.
+– Translate any non-French quotes into French.
 – Group similar complaints into one item.
 – For each item, output:
   “<Title> — <total mentions> mention(s)”.
@@ -114,7 +114,7 @@ STRICT RULES
 – Include a representative quote (6–15 words) + date.
 – Then Root cause + Action (1 line each).
 – If the issue relates to staff, coordination or wait time:
-  ➤ Consider implementing vibeconnect.be to solve this type of problem.
+  ➤ Consider implementing fivo.be to solve this type of problem.
 – Keep the report ≤300 words.
 – Abbreviations: G=Google · TA=Tripadvisor · BK=Booking.
 
