@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>InsightsAI — Your hotel’s day, on one page</title>
+  <title>InsightsAI - Your hotel’s day, on one page</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -17,6 +17,7 @@
       <div class="nav__brand">InsightsAI</div>
       <nav class="nav__links">
         <a href="#how">How</a>
+        <a href="#demo">See it</a>
         <a href="#roi">ROI</a>
         <a href="#pricing">Pricing</a>
         <!-- NEW: Book a demo CTA -->
@@ -30,10 +31,11 @@
     <div class="hero__bg"></div>
     <div class="container hero__content">
       <h1 class="hero__title">Your hotel’s day, on one page</h1>
-      <p class="hero__sub">Every review. Every insight. Delivered every morning in plain language.</p>
-      <a class="btn btn--primary" href="#roi">Start saving time today</a>
+      <p class="hero__sub">Every insight of all your reviews. Delivered every morning in plain language.</p>
+      <a class="btn btn--primary" href="#how">Learn more</a>
     </div>
   </section>
+
 
   <!-- From → To -->
   <section class="fromto container">
@@ -55,14 +57,8 @@
               <span>time.</span>
               <span>No</span>
               <span>clarity.</span>
-            </div>
-
-            <div class="front-badge front-badge--down" aria-hidden="true">
-              <!-- trending down -->
-              <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M3 6l7 7 4-4 7 7" />
-                <path d="M21 14v6h-6" />
-              </svg>
+            
+              
             </div>
 
             <button class="poster-plus" aria-label="Open card"><span aria-hidden="true">+</span></button>
@@ -125,13 +121,7 @@
               <span>morning.</span>
             </div>
 
-            <div class="front-badge front-badge--up" aria-hidden="true">
-              <!-- trending up -->
-              <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M3 18l7-7 4 4 7-7" />
-                <path d="M21 10V4h-6" />
-              </svg>
-            </div>
+            
 
             <button class="poster-plus" aria-label="Open card"><span aria-hidden="true">+</span></button>
           </article>
@@ -181,6 +171,7 @@
     </div>
   </section>
 
+
   <!-- How it works (flip-lite, no blur) -->
   <section id="how" class="how container">
     <h2 class="hbar">How it works</h2>
@@ -189,22 +180,27 @@
       <!-- Step 1 -->
       <div class="flip flip--lite" data-flip-lite aria-expanded="false">
         <div class="flip__inner" tabindex="-1">
-          <article class="flip-face flip-front card card--blue" data-flip-front>
-            <div class="card__step">1</div>
-            <div class="card__icon" aria-hidden="true">
-              <!-- Folder (SF-style) -->
-              <svg viewBox="0 0 24 24" width="48" height="48" fill="currentColor">
-                <path d="M4 5a2 2 0 0 1 2-2h6l6 6v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5z"/>
-              </svg>
-            </div>
-            <h3>Import your data</h3>
-            <p>Upload CSV or connect Google / Booking.</p>
-          </article>
+         <article class="flip-face flip-front card card--blue" data-flip-front>
+  <div class="card__step">1</div>
+  <div class="card__icon" aria-hidden="true">
+    <!-- Folder with files (correct proportions) -->
+    <svg viewBox="0 0 48 48" width="48" height="48" fill="currentColor">
+      <!-- Dossier principal -->
+      <path d="M6 10a2 2 0 0 1 2-2h10l4 4h18a2 2 0 0 1 2 2v4H6v-8z"/>
+      <path d="M6 18h36v18a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V18z"/>
+      <!-- Fichiers à l'intérieur -->
+      <rect x="10" y="22" width="18" height="2.5" rx="1.25"/>
+      <rect x="10" y="28" width="22" height="2.5" rx="1.25"/>
+    </svg>
+  </div>
+  <h3>Import your data</h3>
+  <p>Upload a CSV or let InsightsAI fetch public reviews automatically.</p>
+</article>
           <!-- BACK now centered and without bullets -->
           <article class="flip-face flip-back card card--blue card--back card--center">
             <div class="card__back-inner">
               <h4>Import</h4>
-              <p>Upload a CSV or connect Google/Booking. No setup — instant sync.</p>
+              <p>Upload a CSV, or let InsightsAI fetch public reviews directly from Google Places. No heavy setup required.</p>
             </div>
             <button class="poster-close" aria-label="Close card">×</button>
           </article>
@@ -263,6 +259,57 @@
     </div>
   </section>
 
+    <!-- See Insights in action -->
+  <section id="demo" class="demo container">
+    <h2 class="hbar">See Insights in action</h2>
+
+    <div class="demo__card">
+      <div class="demo__left">
+        <form id="demo_form" class="demo__form" autocomplete="off" onsubmit="return false;">
+          <noscript><p class="demo__error">JavaScript is required to generate the report.</p></noscript>
+          <div id="demo_error" class="demo__error" role="alert" hidden></div>
+          <div class="field">
+            <label for="hotel_name">Hotel / Restaurant name</label>
+            <input id="hotel_name" name="hotel" type="text" required minlength="2" maxlength="120" placeholder="e.g., Hotel Amigo" />
+          </div>
+          <div class="field">
+            <label for="hotel_city">City</label>
+            <input id="hotel_city" name="city" type="text" required minlength="2" maxlength="80" placeholder="e.g., Brussels" />
+          </div>
+          <div class="demo__actions">
+            <button type="button" class="btn btn--primary" id="btn_generate" data-loading-text="Generating…" aria-controls="demo_status">
+              Generate report
+            </button>
+            <button type="button" class="btn btn--ghost" id="btn_pdf" hidden>Download PDF</button>
+          </div>
+          <p class="demo__note">We analyze recent public reviews to create a one‑page, plain‑language report.</p>
+        </form>
+      </div>
+
+      <aside class="demo__right">
+        <div class="demo__logo" aria-hidden="true">
+          <!-- Glassy logo placeholder -->
+          <svg viewBox="0 0 120 120" width="140" height="140" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="g" x1="0" x2="1">
+                <stop offset="0" stop-color="#A8C5FF"/>
+                <stop offset="1" stop-color="#FFD5C2"/>
+              </linearGradient>
+            </defs>
+            <rect x="10" y="10" width="100" height="100" rx="24" fill="url(#g)" opacity="0.2"/>
+            <text x="60" y="75" text-anchor="middle" font-size="28" font-family="Inter, -apple-system, system-ui" fill="#111">IA</text>
+          </svg>
+        </div>
+        <div id="demo_status" class="demo__status" role="status" aria-live="polite" hidden>
+          <span class="spinner" aria-hidden="true"></span> Generating your report…
+        </div>
+        <div id="demo_result" class="demo__preview" aria-live="polite">
+          <div class="demo__placeholder">Your report preview will appear here.</div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
   <!-- Key benefits -->
   <section class="benefits container">
     <h2 class="hbar">Key benefits</h2>
@@ -293,7 +340,7 @@
           <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M4 5a2 2 0 0 1 2-2h6l6 6v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5z"/></svg>
         </div>
         <h3>CSV import</h3>
-        <p>Easy import from Google, Booking, TripAdvisor.</p>
+        <p>Sync Google Places reviews automatically, or upload a CSV.</p>
       </article>
     </div>
   </section>
@@ -307,7 +354,7 @@
 
         <div class="slider">
           <label for="range_reviews">Reviews / day <output id="out_reviews" for="range_reviews">12</output></label>
-          <input id="range_reviews" type="range" min="0" max="50" value="12" />
+          <input id="range_reviews" type="range" min="0" max="100" value="12" />
         </div>
 
         <div class="slider">
@@ -355,14 +402,13 @@
 
     <details class="qa">
       <summary><span class="qa__ico" aria-hidden="true">
-        <!-- link/cloud-ish -->
+        <!-- globe -->
         <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
-          <rect x="6" y="8" width="12" height="8" rx="2"></rect>
-          <circle cx="9" cy="12" r="1"></circle><circle cx="15" cy="12" r="1"></circle>
-          <path d="M12 8V5"></path><circle cx="12" cy="4" r="1"></circle>
+          <circle cx="12" cy="12" r="9"></circle>
+          <path d="M2.5 12h19M12 2.5a14 14 0 0 1 0 19M12 2.5a14 14 0 0 0 0 19"></path>
         </svg>
-      </span>Is Google automatic?</summary>
-      <div class="qa__a">Yes — connect Google Business Profile once and it stays in sync.</div>
+      </span>How do you fetch reviews?</summary>
+      <div class="qa__a">GPT‑5 analysis on top of Google Places reviews. Optional CSV upload and direct connectors coming soon.</div>
     </details>
 
     <details class="qa">
@@ -404,6 +450,14 @@
   <!-- Overlay for main flip cards -->
   <div class="flip-overlay" aria-hidden="true"></div>
 
-  <script src="static/script.js"></script>
+  <script>
+    window.__INSIGHTSCFG__ = Object.freeze({
+      endpoints: {
+        generate: "/api/report",
+        pdf: "/api/report/pdf"
+      }
+    });
+  </script>
+  <script src="/static/script.js" defer></script>
 </body>
 </html>

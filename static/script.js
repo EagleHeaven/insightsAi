@@ -163,3 +163,151 @@
     bg.style.transform=`translateY(${y}px)`;
   },{passive:true});
 })();
+
+/* -------------------------------------------------------
+   Demo form — generate preview via /api/report + export PDF
+------------------------------------------------------- */
+(function(){
+  const cfg = (window.__INSIGHTSCFG__ && window.__INSIGHTSCFG__.endpoints)
+    ? window.__INSIGHTSCFG__.endpoints
+    : { generate: '/api/report', pdf: '/api/report/pdf' };
+
+  const form   = document.getElementById('demo_form');
+  const nameEl = document.getElementById('hotel_name');
+  const cityEl = document.getElementById('hotel_city');
+  const btnGen = document.getElementById('btn_generate');
+  const btnPdf = document.getElementById('btn_pdf');
+  const result = document.getElementById('demo_result');
+  const status = document.getElementById('demo_status');
+  const error  = document.getElementById('demo_error');
+  if(!form || !nameEl || !cityEl || !result || !status || !error) return;
+
+  // initial state
+  if (btnPdf) btnPdf.hidden = true;
+  form.setAttribute('novalidate', 'true');
+
+  let ctrl = null;
+
+  function showError(msg){
+    error.textContent = msg || '';
+    error.hidden = !msg;
+  }
+  function showStatus(flag){
+    status.hidden = !flag; // content already in HTML (spinner + text)
+    if (flag) status.setAttribute('aria-busy','true');
+    else status.removeAttribute('aria-busy');
+  }
+  function resetPreview(){
+    result.innerHTML = '';
+  }
+
+  async function onSubmit(e){
+    if (e && typeof e.preventDefault === 'function') e.preventDefault();
+
+    const hotel = (nameEl.value || '').trim();
+    const city  = (cityEl.value || '').trim();
+
+    showError('');
+    resetPreview();
+    showStatus(true);
+
+    if (!hotel || !city){
+      showStatus(false);
+      showError('Please provide a name and a city.');
+      if (btnPdf) btnPdf.hidden = true;
+      return;
+    }
+
+    const originalText = btnGen?.getAttribute('data-original-text') || btnGen?.textContent || 'Generate report';
+    const loadingText  = btnGen?.getAttribute('data-loading-text') || 'Generating…';
+
+    if (btnGen){
+      btnGen.disabled = true;
+      btnGen.textContent = loadingText;
+    }
+    if (btnPdf){
+      btnPdf.disabled = true;
+      btnPdf.hidden = true;
+    }
+
+    try{
+      if(ctrl) ctrl.abort();
+      ctrl = new AbortController();
+      const r = await fetch(cfg.generate, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ hotel, city }),
+        signal: ctrl.signal
+      });
+      if(!r.ok){
+        const t = await r.text().catch(()=> '');
+        throw new Error(t || ('HTTP '+r.status));
+      }
+      const data = await r.json().catch(()=> ({}));
+      const html = (data && data.html) ? String(data.html) : '';
+      if (html){
+        result.innerHTML = html;
+        showError('');
+        if (btnPdf){
+          btnPdf.hidden = false;
+          btnPdf.disabled = false;
+        }
+      } else {
+        result.innerHTML = '';
+        showError('No content returned by the server.');
+        if (btnPdf) btnPdf.hidden = true;
+      }
+    } catch(err){
+      console.error(err);
+      result.innerHTML = '';
+      showError('⚠️ Unable to generate. Please try again.');
+      if (btnPdf) btnPdf.hidden = true;
+    } finally {
+      showStatus(false);
+      if (btnGen){
+        btnGen.disabled = false;
+        btnGen.textContent = originalText;
+      }
+    }
+  }
+
+  // Store original button text for reset
+  if (btnGen && !btnGen.getAttribute('data-original-text')) {
+    btnGen.setAttribute('data-original-text', btnGen.textContent || 'Generate report');
+  }
+
+  // Bind both: click and (defensive) submit
+  btnGen?.addEventListener('click', onSubmit);
+  form.addEventListener('submit', onSubmit);
+
+  // Server-side PDF generation (no html2canvas/jsPDF required)
+  btnPdf?.addEventListener('click', async ()=>{
+    const hotel = (nameEl.value || '').trim();
+    const city  = (cityEl.value || '').trim();
+    if(!hotel || !city) return;
+
+    btnPdf.disabled = true;
+    try{
+      const r = await fetch(cfg.pdf, {
+        method:'POST',
+        headers:{ 'Content-Type':'application/json' },
+        body: JSON.stringify({ hotel, city })
+      });
+      if(!r.ok) throw new Error('HTTP '+r.status);
+      const blob = await r.blob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'InsightsAI-report.pdf';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    } catch(e){
+      console.error(e);
+      showError('Unable to download PDF right now.');
+    } finally {
+      btnPdf.disabled = false;
+    }
+  });
+})();

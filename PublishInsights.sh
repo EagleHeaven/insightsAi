@@ -1,25 +1,54 @@
-#export AWS_ACCESS_KEY_ID=xxxxxx
-#export AWS_SECRET_ACCESS_KEY=zxxxxxxxxxxx
-#export AWS_DEFAULT_REGION=xxxxxxx
-#export ACCOUNT_ID=zxxxxxxxxxxx
-export REPO_NAME=vibeconnect-insights-ai
-export IMAGE_NAME=insightsai
-export IMAGE_TAG=$BITRISE_TRIGGERED_WORKFLOW_ID-$BITRISE_BUILD_NUMBER
-export ECR_URL=$ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
+#!/bin/bash
 
-docker build -f Dockerfile \
-  --no-cache \
-  --progress=plain \
-  --build-arg OPENAI_API_KEY=$OPENAI_API_KEY \
-  --build-arg OPENAI_MODEL=$OPENAI_MODEL \
-  --build-arg GOOGLE_PLACES_API_KEY=$GOOGLE_PLACES_API_KEY \
-  --provenance=false \
-  -t ${IMAGE_NAME}:${IMAGE_TAG} .
+# Script de lancement avec vérifications
+echo "🚀 Starting InsightsAI..."
 
-docker run --rm -e AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY -e AWS_DEFAULT_REGION amazon/aws-cli \
-  ecr get-login-password --region $AWS_DEFAULT_REGION | \
-  docker login --username AWS --password-stdin $ECR_URL
+# Vérifier que .env existe
+if [ ! -f .env ]; then
+    echo "⚠️  .env file not found. Creating example..."
+    cat > .env << EOF
+# Modèles
+OPENAI_MODEL=gpt-5
+OPENAI_MODEL_ANALYZE=gpt-5
+OPENAI_MODEL_GATHER=gpt-5-mini
 
-docker tag $IMAGE_NAME:$IMAGE_TAG $ECR_URL/$REPO_NAME:$IMAGE_TAG
+# Reasoning / Verbosity
+OPENAI_REASONING=low
+OPENAI_VERBOSITY=low
+MAX_OUTPUT_TOKENS=700
 
-docker push $ECR_URL/$REPO_NAME:$IMAGE_TAG
+# Web search
+USE_WEB_SEARCH=true
+SEARCH_CONTEXT_SIZE=low
+
+# Sécurité & perfs
+OPENAI_MAX_CONCURRENCY=1
+REQUEST_TIMEOUT_SECONDS=45
+
+# PDF
+PDF_ENGINE=weasyprint
+
+# Google Places
+GOOGLE_PLACES_API_KEY=replace-with-your-key
+
+# CORS (dev)
+ALLOWED_ORIGINS=*
+EOF
+    echo "✅ Created .env file. Please edit with your OpenAI API key."
+    exit 1
+fi
+
+# Vérifier la clé API
+if ! grep -q "OPENAI_API_KEY=" .env; then
+    echo "❌ OPENAI_API_KEY not found in .env"
+    exit 1
+fi
+
+if ! grep -q "GOOGLE_PLACES_API_KEY=" .env; then
+    echo "❌ GOOGLE_PLACES_API_KEY not found in .env"
+    exit 1
+fi
+
+# Lancer l'application
+echo "✅ Environment ready. Starting server..."
+uvicorn app.main:app --reload --host 127.0.0.1 --port 8000 --env-file .env

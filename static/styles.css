@@ -13,6 +13,8 @@
   --grad-before:linear-gradient(180deg,#111,#0a0a0a);
 }
 
+html{scroll-behavior:smooth}
+
 *{box-sizing:border-box}
 html,body{height:100%}
 body{
@@ -61,11 +63,12 @@ a{color:inherit;text-decoration:none}
   z-index:30;
   background:rgba(255,255,255,.8);
   backdrop-filter:saturate(180%) blur(12px);
-  border-bottom:1px solid #eee
+  border-bottom:1px solid #eee;
+  box-shadow:0 1px 0 rgba(0,0,0,.04);
 }
 .nav__row{display:flex;align-items:center;justify-content:space-between;height:64px}
 .nav__brand{font-weight:800}
-.nav__links a{margin-left:18px;color:#333}
+.nav__links a{margin-left:18px;color:#333;font-size:15px;font-weight:600;letter-spacing:-.01em}
 
 /* ---------- Hero ---------- */
 .hero{position:relative;padding:120px 0 140px;overflow:hidden}
@@ -109,6 +112,7 @@ a{color:inherit;text-decoration:none}
 }
 .poster-plus:hover,.poster-close:hover{transform:translateY(-1px);box-shadow:var(--shadow-strong)}
 .poster-plus span{font-size:22px;line-height:0}
+.poster-plus:focus,.poster-close:focus{outline:none}
 
 .flip-back{transform:rotateY(180deg);padding:56px 48px;display:flex;align-items:center;justify-content:center}
 .flip-back__inner{max-width:560px;text-align:left}
@@ -127,8 +131,8 @@ a{color:inherit;text-decoration:none}
 .after-front{background:var(--grad-after)}
 
 /* Specific backs (soft tinted) */
-.flip-back--before{background:linear-gradient(180deg,#ffe5df 0%, #fff 30%)}
-.flip-back--after{background:linear-gradient(180deg,#e7fff3 0%, #fff 30%)}
+.flip-back--before{background:linear-gradient(180deg,#ffe5df 0%, #fff 30%); border:1px solid #f7d8d0; box-shadow: inset 0 1px 0 rgba(255,255,255,.6);}
+.flip-back--after{background:linear-gradient(180deg,#e7fff3 0%, #fff 30%); border:1px solid #cff1de; box-shadow: inset 0 1px 0 rgba(255,255,255,.6);}
 
 /* Overlay blur */
 .flip-overlay{
@@ -140,6 +144,7 @@ a{color:inherit;text-decoration:none}
 .flip-overlay.is-visible{opacity:1;pointer-events:auto}
 .flip.is-open{z-index:50}
 .is-locked{overflow:hidden}
+.flip *:focus{box-shadow:none!important}
 
 /* ---------- How it works ---------- */
 .how{padding:96px 0}
@@ -216,6 +221,25 @@ a{color:inherit;text-decoration:none}
 /* ---------- Remove colored focus rings ---------- */
 .flip:focus,.flip *:focus,.card:focus,.card *:focus,.poster-plus:focus,.poster-close:focus{outline:none}
 
+/* ---------- Demo (See Insights in action) ---------- */
+.demo{padding:96px 0}
+.demo__card{display:grid;grid-template-columns:1.05fr .95fr;gap:28px;background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:28px}
+.demo__left{display:flex;align-items:center}
+.demo__form{width:100%}
+.field{margin-bottom:16px}
+.field label{display:block;font-weight:700;margin-bottom:8px;font-size:14px}
+.field input{width:100%;padding:14px 16px;border-radius:12px;border:1px solid #e5e5ea;background:#fff;outline:none}
+.field input:focus{border-color:#111}
+.demo__actions{display:flex;gap:12px;margin:10px 0 6px}
+.demo__note{color:#666;font-size:14px;margin:6px 0 0}
+
+.demo__right{display:flex;flex-direction:column;gap:16px}
+.demo__logo{display:grid;place-items:center}
+.demo__preview{background:#fff;border:1px solid #eee;border-radius:16px;box-shadow:var(--shadow);padding:18px;min-height:340px;max-height:520px;overflow:auto}
+.demo__placeholder{color:#888;text-align:center;padding:80px 10px}
+.demo__loading{color:#111;font-weight:700}
+.demo__error{color:#b00020;font-weight:600}
+
 /* ---------- Responsive ---------- */
 @media (max-width: 1000px){
   .front-copy span,.front-copy--after span{font-size:56px}
@@ -249,3 +273,54 @@ a{color:inherit;text-decoration:none}
   transform: translateY(-1px);
 }
 
+/* Loading and error states */
+#demo_status {
+    color: #000;
+    font-weight: 500;
+    text-align: center;
+    margin-top: 15px;
+}
+
+#demo_error {
+    color: red;
+    font-weight: 500;
+    text-align: center;
+    margin-top: 10px;
+}
+
+#download_pdf {
+    display: none;
+    margin: 20px auto;
+    text-align: center;
+    padding: 10px 20px;
+    background-color: #007aff;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+#download_pdf:hover {
+    background-color: #005bb5;
+}
+
+/* Demo spinner & utilities */
+.spinner{
+  width:24px;height:24px;border-radius:50%;
+  border:3px solid #e6e9ff; border-top-color:#a8c5ff;
+  display:inline-block; vertical-align:middle; margin-right:8px;
+  animation:spin .9s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ---------- Front badges (Before/After) ---------- */
+.front-badge{
+  position:absolute; top:16px; right:16px; width:48px; height:48px;
+  border-radius:12px; display:grid; place-items:center;
+  background:rgba(255,255,255,.85); color:#111; box-shadow:var(--shadow);
+}
+.front-badge--down{background:linear-gradient(180deg,#ffe5ea 0%, #ffffff 60%); color:#b3261e}
+.front-badge--up{background:linear-gradient(180deg,#e8fff2 0%, #ffffff 60%); color:#0b7a3c}
+
+/* Generic hidden utility (used by JS) */
+.is-hidden{display:none !important}

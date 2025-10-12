@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>InsightsAI Report</title>
+  <style>
+    body{font:14px/1.5 -apple-system,BlinkMacSystemFont,"Inter","Segoe UI",Roboto,Helvetica,Arial;color:#0b0b0c;margin:24px;background:#fff}
+    h1{font-size:22px;margin:0 0 16px}
+    h2{font-size:18px;margin:18px 0 8px}
+    .pill{display:inline-block;background:#eef1ff;border:1px solid #e6e9ff;border-radius:999px;padding:2px 8px}
+    .bar{height:10px;border-radius:999px;background:var(--bg, #e9ecf7);margin:4px 0 12px;max-width:100%;width:calc(var(--p, 0) * 1%)}
+    .row{display:flex;justify-content:space-between;align-items:center}
+    .row span{display:inline-flex;gap:6px;align-items:center}
+    .muted{color:#666}
+    ul{margin:6px 0 0 0;padding-left:16px}
+  </style>
+</head>
+<body>
+  <h1>{{ report.meta.property_name|default('') }} — {{ report.meta.city|default('') }}{% if report.meta.country %}, {{ report.meta.country }}{% endif %}</h1>
+  <p class="muted">{{ report.meta.since|default('') }} → {{ report.meta.until|default('') }} • {{ report.meta.total_reviews|default(0) }} reviews</p>
+
+  <h2>Issue distribution (Top 5)</h2>
+  {% for it in report.issue_distribution or [] %}
+    <div class="row">
+      <span>{{ it.icon|default('') }} {{ it.label|default('') }}</span>
+      <strong>{{ it.percent|default(0) }}%</strong>
+    </div>
+   {% set _p = it.percent|default(0) %}{% if _p < 0 %}{% set _p = 0 %}{% elif _p > 100 %}{% set _p = 100 %}{% endif %}
+   <div class="bar" style="--p: {{ _p }}; --bg: {{ it.color|default('#A8C5FF') }};"></div>
+  {% endfor %}
+
+  <h2>Key observations</h2>
+  <ul>
+  {% for o in report.key_observations or [] %}
+    <li>
+      <strong>{{ o.title|default('') }}</strong>
+      — “{{ o.quote.text|default('') }}”
+      ({{ o.quote.source|default('') }}, {{ o.quote.date|default('') }})
+      {% if o.root_cause %} · Root cause: {{ o.root_cause }} {% endif %}
+      {% if o.route_to %} · <span class="pill">{{ o.route_to }}</span>{% endif %}
+    </li>
+  {% endfor %}
+  </ul>
+
+  {% if report.kpi_baseline %}
+  <h2>KPI baseline</h2>
+  <ul>
+  {% for k in report.kpi_baseline or [] %}
+    <li>{{ k.label|default('') }} — {{ k.current|default('') }}{% if k.target %} · Target: {{ k.target }}{% endif %}</li>
+  {% endfor %}
+  </ul>
+  {% endif %}
+
+  <h2>KPI to monitor</h2>
+  <ul>
+  {% for x in report.kpi_to_monitor or [] %}
+    <li>{{ x }}</li>
+  {% endfor %}
+  </ul>
+
+  <h2>Conclusion</h2>
+  <p class="muted">{{ report.conclusion|default('') }}</p>
+</body>
+</html>
